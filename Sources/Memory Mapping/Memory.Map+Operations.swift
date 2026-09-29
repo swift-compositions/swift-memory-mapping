@@ -1,5 +1,5 @@
 public import Kernel
-@_spi(MemoryInternal) public import Memory_Map
+@_spi(MemoryInternal) public import Memory
 
 extension Memory.Map {
 

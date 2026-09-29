@@ -28,25 +28,14 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-memory.git",
-            branch: "main"
-        ),
+            url: "https://github.com/swift-atoms/swift-memory.git",
+            branch: "main", traits: ["Lock", "Map", "Shared"]),
         .package(
             url: "https://github.com/swift-molecules/swift-memory-allocation.git",
             branch: "main"
         ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory-lock.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory-shared.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory-map.git",
-            branch: "main"
-        ),
+        .package(url: "https://github.com/swift-atoms/swift-system.git", branch: "main"),
+        .package(url: "https://github.com/swift-compositions/swift-test-application.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -58,12 +47,6 @@ let package = Package(
                     name: "Memory Allocation Primitive",
                     package: "swift-memory-allocation"
                 ),
-                .product(name: "Memory Lock", package: "swift-memory-lock"),
-                .product(
-                    name: "Memory Shared",
-                    package: "swift-memory-shared"
-                ),
-                .product(name: "Memory Map", package: "swift-memory-map"),
                 .product(
                     name: "Darwin Memory Standard",
                     package: "swift-darwin-standard",
@@ -74,6 +57,7 @@ let package = Package(
                     package: "swift-linux-standard",
                     condition: .when(platforms: [.linux])
                 ),
+                .product(name: "System", package: "swift-system"),
             ]
         ),
         .testTarget(
@@ -81,6 +65,8 @@ let package = Package(
             dependencies: [
                 "Memory Mapping",
                 .product(name: "Kernel Test Support", package: "swift-kernel"),
+                .product(name: "Memory", package: "swift-memory"),
+                .product(name: "Testing", package: "swift-test-application"),
             ]
         ),
     ],

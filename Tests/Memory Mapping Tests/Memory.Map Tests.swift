@@ -1,6 +1,6 @@
 import Kernel
 import Kernel_Test_Support
-@_spi(MemoryInternal) import Memory_Map
+@_spi(MemoryInternal) import Memory
 import Testing
 
 @testable import Memory_Mapping

@@ -1,18 +1,18 @@
 public import Kernel
 
-extension System.Page {
+extension Memory.Map.Page {
 
     public enum Lock {}
 }
 
-extension System.Page.Lock {
+extension Memory.Map.Page.Lock {
 
     public static var all: All.Type { All.self }
 
     public enum All {}
 }
 
-extension System.Page.Lock.All {
+extension Memory.Map.Page.Lock.All {
 
     public static var isSupported: Bool {
         #if os(Windows)
@@ -23,7 +23,7 @@ extension System.Page.Lock.All {
     }
 }
 
-extension System.Page.Lock {
+extension Memory.Map.Page.Lock {
 
     public static func lock(
         address: UnsafeRawPointer,
@@ -48,7 +48,7 @@ extension System.Page.Lock {
     }
 }
 
-extension System.Page.Lock {
+extension Memory.Map.Page.Lock {
 
     public static func lock(_ map: borrowing Memory.Map) throws(Memory.Error) {
         guard let base = unsafe map.baseAddress else {
@@ -66,7 +66,7 @@ extension System.Page.Lock {
 }
 
 #if !os(Windows)
-    extension System.Page.Lock.All {
+    extension Memory.Map.Page.Lock.All {
 
         public typealias Options = Memory.Lock.All.Options
 

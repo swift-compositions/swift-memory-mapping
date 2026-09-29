@@ -2,7 +2,7 @@ import Testing
 
 @testable import Memory_Mapping
 
-extension System.Page.Lock {
+extension Memory.Map.Page.Lock {
     enum Test {
         @Suite struct Unit {}
         @Suite struct `Edge Case` {}
@@ -11,7 +11,7 @@ extension System.Page.Lock {
     }
 }
 
-extension System.Page.Lock.Test.Unit {
+extension Memory.Map.Page.Lock.Test.Unit {
 
     #if os(macOS) || os(Linux)
         @Test
@@ -19,8 +19,8 @@ extension System.Page.Lock.Test.Unit {
             let map = try Memory.Map(anonymousLength: 4096, access: [.read, .write])
 
             do throws(Memory.Error) {
-                try System.Page.Lock.lock(map)
-                try System.Page.Lock.unlock(map)
+                try Memory.Map.Page.Lock.lock(map)
+                try Memory.Map.Page.Lock.unlock(map)
             } catch {
 
             }
@@ -41,8 +41,8 @@ extension System.Page.Lock.Test.Unit {
             let length = map.length
 
             do throws(Memory.Error) {
-                try System.Page.Lock.lock(address: base, size: length)
-                try System.Page.Lock.unlock(address: base, size: length)
+                try Memory.Map.Page.Lock.lock(address: base, size: length)
+                try Memory.Map.Page.Lock.unlock(address: base, size: length)
             } catch {
 
             }
@@ -53,8 +53,8 @@ extension System.Page.Lock.Test.Unit {
         @Test
         func `lock all flags are accessible`() {
 
-            let _: System.Page.Lock.All.Options = .current
-            let _: System.Page.Lock.All.Options = .future
+            let _: Memory.Map.Page.Lock.All.Options = .current
+            let _: Memory.Map.Page.Lock.All.Options = .future
         }
     #endif
 
@@ -72,8 +72,8 @@ extension System.Page.Lock.Test.Unit {
             let length = map.length
 
             do throws(Memory.Error) {
-                try System.Page.Lock.lock(address: base, size: length)
-                try System.Page.Lock.unlock(address: base, size: length)
+                try Memory.Map.Page.Lock.lock(address: base, size: length)
+                try Memory.Map.Page.Lock.unlock(address: base, size: length)
             } catch {
 
             }
@@ -94,8 +94,8 @@ extension System.Page.Lock.Test.Unit {
             let length = map.length
 
             do throws(Memory.Error) {
-                try System.Page.Lock.lock(address: base, size: length)
-                try System.Page.Lock.unlock(address: base, size: length)
+                try Memory.Map.Page.Lock.lock(address: base, size: length)
+                try Memory.Map.Page.Lock.unlock(address: base, size: length)
             } catch {
 
             }
@@ -105,10 +105,10 @@ extension System.Page.Lock.Test.Unit {
     #endif
 }
 
-extension System.Page.Lock.Test.`Edge Case` {
+extension Memory.Map.Page.Lock.Test.`Edge Case` {
 
 }
 
-extension System.Page.Lock.Test.Performance {
+extension Memory.Map.Page.Lock.Test.Performance {
 
 }

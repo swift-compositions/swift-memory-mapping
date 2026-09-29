@@ -36,7 +36,7 @@ public import Kernel
             let alignedOffset = Memory.Allocation.align.down(requestedOffset)
             let delta = Kernel.File.Size(requestedOffset - alignedOffset)
             let totalLength = userLen + delta
-            let mappingLen = System.Page.align.up(totalLength)
+            let mappingLen = try Memory.Map.Page.align.up(totalLength)
 
             let mappingLenCount = Memory.Address.Count(UInt(mappingLen.underlying))
 
@@ -168,7 +168,7 @@ extension Memory.Map {
             let alignedOffset = Memory.Allocation.align.down(requestedOffset)
             let delta = Kernel.File.Size(requestedOffset - alignedOffset)
             let totalLength = userLen + delta
-            let mappingLen = System.Page.align.up(totalLength)
+            let mappingLen = try Memory.Map.Page.align.up(totalLength)
 
             let mappingLenCount = Memory.Address.Count(UInt(mappingLen.underlying))
 
@@ -222,7 +222,7 @@ extension Memory.Map {
         ) throws(Memory.Error) {
             try access.validate()
 
-            let mappingLen = System.Page.align.up(length)
+            let mappingLen = try Memory.Map.Page.align.up(length)
             let mappingLenCount = Memory.Address.Count(UInt(mappingLen.underlying))
 
             let region: Memory.Map.Region
@@ -271,7 +271,7 @@ extension Memory.Map {
         ) throws(Memory.Error) -> Self {
             try access.validate()
 
-            let mappingLen = System.Page.align.up(length)
+            let mappingLen = try Memory.Map.Page.align.up(length)
             let mappingLenCount = Memory.Address.Count(UInt(mappingLen.underlying))
 
             let region: Memory.Map.Region
@@ -319,7 +319,7 @@ extension Memory.Map {
         ) throws(Memory.Error) {
             try access.validate()
 
-            let mappingLen = System.Page.align.up(length)
+            let mappingLen = try Memory.Map.Page.align.up(length)
             let mappingLenCount = Memory.Address.Count(UInt(mappingLen.underlying))
 
             let baseAddress: Memory.Address

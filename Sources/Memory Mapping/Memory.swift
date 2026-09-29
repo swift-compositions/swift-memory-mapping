@@ -7,11 +7,21 @@ extension Memory {
     public static var allocation: Allocation.Type { Allocation.self }
 }
 
-extension System.Page {
+extension Memory.Map {
+    public enum Page {}
+}
+
+extension Memory.Map.Page {
 
     @inlinable
     public static var alignment: Memory.Alignment {
-        System.pageSize.alignment
+        get throws(Memory.Error) {
+            do throws(Memory.Alignment.Error) {
+                return try Memory.Alignment(System.pageSize)
+            } catch {
+                throw .size
+            }
+        }
     }
 
     public static var align: Align.Type { Align.self }
@@ -19,16 +29,16 @@ extension System.Page {
     public enum Align {}
 }
 
-extension System.Page.Align {
+extension Memory.Map.Page.Align {
 
     @inlinable
-    public static func down(_ size: Kernel.File.Size) -> Kernel.File.Size {
-        size.alignedDown(to: System.Page.alignment)
+    public static func down(_ size: Kernel.File.Size) throws(Memory.Error) -> Kernel.File.Size {
+        try size.alignedDown(to: Memory.Map.Page.alignment)
     }
 
     @inlinable
-    public static func up(_ size: Kernel.File.Size) -> Kernel.File.Size {
-        size.alignedUp(to: System.Page.alignment)
+    public static func up(_ size: Kernel.File.Size) throws(Memory.Error) -> Kernel.File.Size {
+        try size.alignedUp(to: Memory.Map.Page.alignment)
     }
 }
 
