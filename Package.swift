@@ -35,7 +35,6 @@ let package = Package(
             branch: "main"
         ),
         .package(url: "https://github.com/swift-atoms/swift-system.git", branch: "main"),
-        .package(url: "https://github.com/swift-compositions/swift-test-application.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -66,7 +65,6 @@ let package = Package(
                 "Memory Mapping",
                 .product(name: "Kernel Test Support", package: "swift-kernel"),
                 .product(name: "Memory", package: "swift-memory"),
-                .product(name: "Testing", package: "swift-test-application"),
             ]
         ),
     ],
