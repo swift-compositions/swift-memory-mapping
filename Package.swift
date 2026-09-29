@@ -44,7 +44,7 @@ let package = Package(
                 .product(name: "Kernel", package: "swift-kernel"),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(
-                    name: "Memory Allocation Primitive",
+                    name: "Memory Allocation",
                     package: "swift-memory-allocation"
                 ),
                 .product(

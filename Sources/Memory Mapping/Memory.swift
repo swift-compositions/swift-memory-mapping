@@ -1,5 +1,5 @@
 public import Kernel
-public import Memory_Allocation_Primitive
+public import Memory_Allocation
 import Memory
 
 extension Memory {
