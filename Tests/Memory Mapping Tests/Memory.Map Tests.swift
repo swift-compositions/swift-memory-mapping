@@ -36,16 +36,16 @@ extension Memory.Map.Test.Unit {
         func `anonymous mapping read/write`() throws {
             let map = try Memory.Map(anonymousLength: 4096, access: [.read, .write])
 
-            map[0] = 42
-            map[100] = 123
+            map[0] = Byte(bitPattern: 42)
+            map[100] = Byte(bitPattern: 123)
 
             let byte0 = map[0]
             let byte100 = map[100]
 
             map.unmap()
 
-            #expect(byte0 == 42)
-            #expect(byte100 == 123)
+            #expect(byte0 == Byte(bitPattern: 42))
+            #expect(byte100 == Byte(bitPattern: 123))
         }
 
         @Test
@@ -104,25 +104,25 @@ extension Memory.Map.Test.Unit {
         func `anonymous mapping read/write (Windows)`() throws {
             let map = try Memory.Map.anonymous(length: 4096, access: [.read, .write])
 
-            map[0] = 42
-            map[100] = 123
+            map[0] = Byte(bitPattern: 42)
+            map[100] = Byte(bitPattern: 123)
 
             let byte0 = map[0]
             let byte100 = map[100]
 
             map.unmap()
 
-            #expect(byte0 == 42)
-            #expect(byte100 == 123)
+            #expect(byte0 == Byte(bitPattern: 42))
+            #expect(byte100 == Byte(bitPattern: 123))
         }
 
         @Test
         func `withUnsafeBytes read access (Windows)`() throws {
             let map = try Memory.Map.anonymous(length: 4096, access: [.read, .write])
 
-            map[0] = 1
-            map[1] = 2
-            map[2] = 3
+            map[0] = Byte(bitPattern: 1)
+            map[1] = Byte(bitPattern: 2)
+            map[2] = Byte(bitPattern: 3)
 
             let sum = map.withUnsafeBytes { buffer -> Int in
                 Int(buffer[0]) + Int(buffer[1]) + Int(buffer[2])
@@ -149,9 +149,9 @@ extension Memory.Map.Test.Unit {
 
             map.unmap()
 
-            #expect(byte0 == 10)
-            #expect(byte1 == 20)
-            #expect(byte2 == 30)
+            #expect(byte0 == Byte(bitPattern: 10))
+            #expect(byte1 == Byte(bitPattern: 20))
+            #expect(byte2 == Byte(bitPattern: 30))
         }
 
         @Test
@@ -172,9 +172,9 @@ extension Memory.Map.Test.Unit {
         func `withUnsafeBytes provides read access`() throws {
             let map = try Memory.Map(anonymousLength: 4096, access: [.read, .write])
 
-            map[0] = 1
-            map[1] = 2
-            map[2] = 3
+            map[0] = Byte(bitPattern: 1)
+            map[1] = Byte(bitPattern: 2)
+            map[2] = Byte(bitPattern: 3)
 
             let sum = map.withUnsafeBytes { buffer -> Int in
                 Int(buffer[0]) + Int(buffer[1]) + Int(buffer[2])
@@ -201,9 +201,9 @@ extension Memory.Map.Test.Unit {
 
             map.unmap()
 
-            #expect(byte0 == 10)
-            #expect(byte1 == 20)
-            #expect(byte2 == 30)
+            #expect(byte0 == Byte(bitPattern: 10))
+            #expect(byte1 == Byte(bitPattern: 20))
+            #expect(byte2 == Byte(bitPattern: 30))
         }
     #endif
 
@@ -250,7 +250,7 @@ extension Memory.Map.Test.Unit {
                 safety: .unchecked
             )
 
-            map[0] = 65
+            map[0] = Byte(bitPattern: 65)
             try map.sync()
 
             let byte0 = map[0]
@@ -258,7 +258,7 @@ extension Memory.Map.Test.Unit {
             map.unmap()
             KernelIOTest.cleanupTempFile(tempFile)
 
-            #expect(byte0 == 65)
+            #expect(byte0 == Byte(bitPattern: 65))
         }
 
         @Test
@@ -275,14 +275,14 @@ extension Memory.Map.Test.Unit {
             )
 
             let originalByte = map[0]
-            map[0] = 99
+            map[0] = Byte(bitPattern: 99)
 
             let newByte = map[0]
 
             map.unmap()
             KernelIOTest.cleanupTempFile(tempFile)
 
-            #expect(newByte == 99)
+            #expect(newByte == Byte(bitPattern: 99))
             #expect(originalByte == Byte(UInt8(ascii: "O")))
         }
 
@@ -370,7 +370,7 @@ extension Memory.Map.Test.Unit {
         func `sync on anonymous mapping`() throws {
             let map = try Memory.Map(anonymousLength: 4096, access: [.read, .write])
 
-            map[0] = 42
+            map[0] = Byte(bitPattern: 42)
 
             do throws(Memory.Error) {
                 try map.sync()
@@ -394,7 +394,7 @@ extension Memory.Map.Test.Unit {
                 safety: .unchecked
             )
 
-            map[0] = 65
+            map[0] = Byte(bitPattern: 65)
 
             try map.sync(async: false)
             try map.sync(async: true)
@@ -409,7 +409,7 @@ extension Memory.Map.Test.Unit {
         func `protect changes access`() throws {
             var map = try Memory.Map(anonymousLength: 4096, access: [.read, .write])
 
-            map[0] = 42
+            map[0] = Byte(bitPattern: 42)
             try map.protect(.read)
 
             let access = map.access
@@ -419,7 +419,7 @@ extension Memory.Map.Test.Unit {
 
             #expect(access == .read)
             #expect(!access.allows.write)
-            #expect(byte0 == 42)
+            #expect(byte0 == Byte(bitPattern: 42))
         }
 
         @Test
@@ -430,13 +430,13 @@ extension Memory.Map.Test.Unit {
             try map.protect([.read, .write])
 
             let access = map.access
-            map[0] = 100
+            map[0] = Byte(bitPattern: 100)
             let byte0 = map[0]
 
             map.unmap()
 
             #expect(access.allows.write)
-            #expect(byte0 == 100)
+            #expect(byte0 == Byte(bitPattern: 100))
         }
     #endif
 
@@ -608,24 +608,24 @@ extension Memory.Map.Test.`Edge Case` {
         func `subscript at last valid index`() throws {
             let map = try Memory.Map(anonymousLength: 100, access: [.read, .write])
 
-            map[99] = 255
+            map[99] = Byte(bitPattern: 255)
             let byte = map[99]
 
             map.unmap()
 
-            #expect(byte == 255)
+            #expect(byte == Byte(bitPattern: 255))
         }
 
         @Test
         func `subscript at first index`() throws {
             let map = try Memory.Map(anonymousLength: 100, access: [.read, .write])
 
-            map[0] = 1
+            map[0] = Byte(bitPattern: 1)
             let byte = map[0]
 
             map.unmap()
 
-            #expect(byte == 1)
+            #expect(byte == Byte(bitPattern: 1))
         }
     #endif
 
@@ -664,24 +664,24 @@ extension Memory.Map.Test.`Edge Case` {
         func `subscript at last valid index (Windows)`() throws {
             let map = try Memory.Map.anonymous(length: 100, access: [.read, .write])
 
-            map[99] = 255
+            map[99] = Byte(bitPattern: 255)
             let byte = map[99]
 
             map.unmap()
 
-            #expect(byte == 255)
+            #expect(byte == Byte(bitPattern: 255))
         }
 
         @Test
         func `subscript at first index (Windows)`() throws {
             let map = try Memory.Map.anonymous(length: 100, access: [.read, .write])
 
-            map[0] = 1
+            map[0] = Byte(bitPattern: 1)
             let byte = map[0]
 
             map.unmap()
 
-            #expect(byte == 1)
+            #expect(byte == Byte(bitPattern: 1))
         }
     #endif
 }
