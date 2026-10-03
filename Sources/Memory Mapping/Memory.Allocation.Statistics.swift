@@ -69,7 +69,6 @@ extension Memory.Allocation.Statistics {
                 instrumentation: .snapshot
             )
         #elseif os(Linux)
-            Linux.Memory.Allocation.Statistics.startTracking()
             let statistics = Linux.Memory.Allocation.Statistics.capture()
             return Self(
                 allocations: statistics.allocations,
