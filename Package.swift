@@ -56,7 +56,7 @@ let package = Package(
                     package: "swift-linux-standard",
                     condition: .when(platforms: [.linux])
                 ),
-                .product(name: "System", package: "swift-system"),
+                .product(name: "System Primitives", package: "swift-system"),
             ]
         ),
         .testTarget(
