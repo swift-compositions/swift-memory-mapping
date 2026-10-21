@@ -29,7 +29,9 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-memory.git",
-            branch: "main", traits: ["Lock", "Map", "Shared"]),
+            branch: "main",
+            traits: ["Lock", "Map", "Shared"]
+        ),
         .package(
             url: "https://github.com/swift-molecules/swift-memory-allocation.git",
             branch: "main"

@@ -4,13 +4,11 @@ extension Memory.Allocation {
         public let buckets: [Bucket]
 
         public init(values: [Int], buckets bucketCount: Int) {
-            guard !values.isEmpty, bucketCount > 0 else {
+            let sorted = values.sorted()
+            guard bucketCount > 0, let min = sorted.first, let max = sorted.last else {
                 self.buckets = []
                 return
             }
-            let sorted = values.sorted()
-            let min = sorted.first!
-            let max = sorted.last!
             let span = max - min + 1
             let bucketSize = Swift.max(1, span / bucketCount)
             var result: [Bucket] = []

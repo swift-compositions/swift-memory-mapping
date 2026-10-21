@@ -1,6 +1,6 @@
 public import Kernel
-public import Memory_Allocation
 import Memory
+public import Memory_Allocation
 
 extension Memory {
 
