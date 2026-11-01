@@ -16,11 +16,7 @@ extension Memory.Map.Page {
     @inlinable
     public static var alignment: Memory.Alignment {
         get throws(Memory.Error) {
-            do throws(Memory.Alignment.Error) {
-                return try Memory.Alignment(System.pageSize)
-            } catch {
-                throw .size
-            }
+            Memory.Page.size.alignment
         }
     }
 

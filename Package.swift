@@ -36,7 +36,6 @@ let package = Package(
             url: "https://github.com/swift-molecules/swift-memory-allocation.git",
             branch: "main"
         ),
-        .package(url: "https://github.com/swift-atoms/swift-system.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -58,7 +57,6 @@ let package = Package(
                     package: "swift-linux-standard",
                     condition: .when(platforms: [.linux])
                 ),
-                .product(name: "System Primitives", package: "swift-system"),
             ]
         ),
         .testTarget(
