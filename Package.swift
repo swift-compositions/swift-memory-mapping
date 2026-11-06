@@ -62,7 +62,7 @@ let package = Package(
         .testTarget(
             name: "Memory Mapping Tests",
             dependencies: [
-                "Memory Mapping",
+                .target(name: "Memory Mapping"),
                 .product(name: "Kernel Test Support", package: "swift-kernel"),
                 .product(name: "Memory", package: "swift-memory"),
             ]
