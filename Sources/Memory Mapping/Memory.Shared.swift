@@ -43,6 +43,8 @@ extension Memory.Shared.Mode: ExpressibleByArrayLiteral {
 }
 
 extension Memory.Shared.Mode {
+
+    public enum Create {}
 }
 
 extension Memory.Shared.Mode.Create {
