@@ -9,7 +9,6 @@ extension Memory.Map.Page.Lock {
 
     public static var all: All.Type { All.self }
 
-    public enum All {}
 }
 
 extension Memory.Map.Page.Lock.All {
