@@ -701,7 +701,7 @@ extension Memory.Map.Test.Performance {
             let map = try Memory.Map(anonymousLength: 65536, access: [.read, .write])
 
             map.withUnsafeMutableBytes { buffer in
-                for i in 0..<buffer.count {
+                (0..<buffer.count).forEach { i in
                     buffer[i] = UInt8(truncatingIfNeeded: i)
                 }
             }
@@ -724,7 +724,7 @@ extension Memory.Map.Test.Performance {
             let map = try Memory.Map.anonymous(length: 65536, access: [.read, .write])
 
             map.withUnsafeMutableBytes { buffer in
-                for i in 0..<buffer.count {
+                (0..<buffer.count).forEach { i in
                     buffer[i] = UInt8(truncatingIfNeeded: i)
                 }
             }
