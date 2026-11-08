@@ -22,7 +22,6 @@ extension Memory.Map.Page {
 
     public static var align: Align.Type { Align.self }
 
-    public enum Align {}
 }
 
 extension Memory.Map.Page.Align {
@@ -52,7 +51,6 @@ extension Memory.Allocation {
 
     public static var align: Align.Type { Align.self }
 
-    public enum Align {}
 }
 
 extension Memory.Allocation.Align {
