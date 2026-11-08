@@ -1,2 +1,2 @@
-@_exported import Kernel
-@_exported import Memory
+@_exported public import Kernel
+@_exported public import Memory
