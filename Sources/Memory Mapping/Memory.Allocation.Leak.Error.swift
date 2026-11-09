@@ -13,7 +13,7 @@ extension Memory.Allocation.Leak.Error: CustomStringConvertible {
             return """
                 Memory leak detected at \(file):\(line)
                 Net allocations: \(allocations)
-                Net bytes: \(bytes)
+                Bytes allocated since baseline: \(bytes)
                 """
         }
     }

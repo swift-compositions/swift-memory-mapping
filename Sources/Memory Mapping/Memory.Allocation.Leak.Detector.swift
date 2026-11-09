@@ -23,7 +23,7 @@ extension Memory.Allocation.Leak.Detector {
         guard netAllocs == 0 else {
             throw .detected(
                 allocations: netAllocs,
-                bytes: net.bytes,
+                bytes: delta().bytes.allocated,
                 file: file,
                 line: line
             )
@@ -53,12 +53,6 @@ extension Memory.Allocation.Leak.Detector.Net {
         let current = Memory.Allocation.Statistics.capture()
         let delta = Memory.Allocation.Statistics.delta(from: detector.baseline, to: current)
         return delta.net.allocations
-    }
-
-    public var bytes: Int {
-        let current = Memory.Allocation.Statistics.capture()
-        let delta = Memory.Allocation.Statistics.delta(from: detector.baseline, to: current)
-        return delta.bytes.allocated
     }
 }
 
