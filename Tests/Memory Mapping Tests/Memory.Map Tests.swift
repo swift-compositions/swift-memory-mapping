@@ -733,3 +733,47 @@ extension Memory.Map.Test.Performance {
         }
     #endif
 }
+
+extension Memory.Map.Test.Integration {
+    #if os(Windows)
+        @Test
+        func `coordinated file mapping holds its exclusive lock until unmap (Windows)`() throws {
+            let path = try Path(validating: Kernel.Temporary.filePath(prefix: "memory-map-lock"))
+            let owner = try Kernel.File.Open.open(
+                path: path,
+                mode: .readWrite,
+                options: [.create, .truncate],
+                permissions: .standard
+            )
+            let other = try Kernel.File.Open.open(
+                path: path,
+                mode: .readWrite,
+                options: [],
+                permissions: .standard
+            )
+            defer { try? Kernel.File.Delete.delete(path: path) }
+
+            let content = Array(repeating: UInt8(7), count: 4096)
+            _ = try unsafe content.withUnsafeBytes { buffer in
+                try unsafe Kernel.IO.Write.write(owner, from: buffer)
+            }
+
+            let map = try Memory.Map.open(
+                fileHandle: owner,
+                range: .whole,
+                access: [.read, .write],
+                sharing: .shared,
+                safety: .coordinated(.exclusive, scope: .file)
+            )
+
+            #expect(throws: Kernel.Lock.Error.self) {
+                try Kernel.Lock.Immediate.lock(other, range: .file, kind: .exclusive)
+            }
+
+            map.unmap()
+
+            try Kernel.Lock.Immediate.lock(other, range: .file, kind: .exclusive)
+            try Kernel.Lock.unlock(other, range: .file)
+        }
+    #endif
+}

@@ -188,7 +188,32 @@ extension Memory.Map {
 
             let region = Self.Region(base: baseAddress, length: mappingLenCount)
 
-            let lockToken: Memory.Lock.Token? = nil
+            let lockToken: Memory.Lock.Token?
+            if case .coordinated(let kind, let scope) = effectiveSafety {
+                let lockRange = Self.computeLockRange(
+                    scope: scope,
+                    alignedOffset: alignedOffset,
+                    mappingLength: mappingLen
+                )
+                do throws(Kernel.Lock.Error) {
+                    lockToken = try Memory.Lock.Token.acquire(
+                        descriptor: fileHandle,
+                        range: lockRange,
+                        kind: kind
+                    )
+                } catch {
+                    do throws(Self.Error) {
+                        try Self.unmap(
+                            addr: region.base,
+                            length: region.length,
+                            isAnonymous: false
+                        )
+                    } catch {}
+                    throw .fileLock(error)
+                }
+            } else {
+                lockToken = nil
+            }
 
             return Self(
                 region: region,
