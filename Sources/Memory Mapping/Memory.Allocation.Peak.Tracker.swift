@@ -81,12 +81,16 @@ extension Memory.Allocation.Peak.Tracker.Peak {
 
 extension Memory.Allocation.Peak.Tracker {
 
+    /// Runs `operation` with a fresh tracker and reports the highest sample.
+    ///
+    /// The tracker samples once after `operation` returns, so the peak is never below the final delta;
+    /// call ``sample()`` inside `operation` to capture higher intermediate values.
     public static func track<T, E: Swift.Error>(
-        sampleInterval: Int = 1,
         _ operation: (Memory.Allocation.Peak.Tracker) throws(E) -> T
     ) throws(E) -> (result: T, peak: Memory.Allocation.Statistics) {
         let tracker = Memory.Allocation.Peak.Tracker()
         let result = try operation(tracker)
+        tracker.sample()
 
         return (
             result,
@@ -98,12 +102,16 @@ extension Memory.Allocation.Peak.Tracker {
         )
     }
 
+    /// Runs `operation` with a fresh tracker and reports the highest sample.
+    ///
+    /// The tracker samples once after `operation` returns, so the peak is never below the final delta;
+    /// call ``sample()`` inside `operation` to capture higher intermediate values.
     public static func track<T, E: Swift.Error>(
-        sampleInterval: Int = 1,
         _ operation: (Memory.Allocation.Peak.Tracker) async throws(E) -> T
     ) async throws(E) -> (result: T, peak: Memory.Allocation.Statistics) {
         let tracker = Memory.Allocation.Peak.Tracker()
         let result = try await operation(tracker)
+        tracker.sample()
 
         return (
             result,
