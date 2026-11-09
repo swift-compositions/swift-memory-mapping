@@ -61,9 +61,9 @@ extension Memory.Allocation.Statistics {
         #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
             let statistics = Darwin.Memory.Allocation.Statistics.capture()
             return Self(
-                allocations: statistics.allocations,
-                deallocations: statistics.deallocations,
-                bytesAllocated: statistics.bytesAllocated,
+                allocations: statistics.blocksInUse,
+                deallocations: 0,
+                bytesAllocated: statistics.bytesInUse,
                 availability: .available,
                 scope: .process,
                 instrumentation: .snapshot
@@ -71,9 +71,9 @@ extension Memory.Allocation.Statistics {
         #elseif os(Linux)
             let statistics = Linux.Memory.Allocation.Statistics.capture()
             return Self(
-                allocations: statistics.allocations,
-                deallocations: statistics.deallocations,
-                bytesAllocated: statistics.bytesAllocated,
+                allocations: statistics.blocksInUse,
+                deallocations: 0,
+                bytesAllocated: statistics.bytesInUse,
                 availability: .available,
                 scope: .thread,
                 instrumentation: .interposed
