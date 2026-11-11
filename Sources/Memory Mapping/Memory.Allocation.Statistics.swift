@@ -71,9 +71,9 @@ extension Memory.Allocation.Statistics {
         #elseif os(Linux)
             let statistics = Linux.Memory.Allocation.Statistics.capture()
             return Self(
-                allocations: statistics.blocksInUse,
-                deallocations: 0,
-                bytesAllocated: statistics.bytesInUse,
+                allocations: statistics.allocations,
+                deallocations: statistics.deallocations,
+                bytesAllocated: statistics.bytesAllocated,
                 availability: .available,
                 scope: .thread,
                 instrumentation: .interposed
